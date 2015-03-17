@@ -42,6 +42,7 @@ setup(
 
     # Dependencies
     install_requires=[
+        'nose'
     ],
 
     # Contents

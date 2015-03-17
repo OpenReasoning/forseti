@@ -3,9 +3,6 @@ Predicate for use within Forseti
 """
 
 
-__author__ = 'mpeveler'
-
-
 class Predicate(object):
     """
     Base predicate class. All others should extend this.
@@ -17,7 +14,7 @@ class Predicate(object):
 
         for kwarg in kwargs:
             if not isinstance(kwarg, Predicate):
-                raise TypeError(kwarg + " is not a Predicate")
+                raise TypeError(str(kwarg) + " is not a Predicate")
 
     @staticmethod
     def argument_number():

@@ -16,7 +16,7 @@ setup(
     # Metadata
 
     name='Forseti',
-    version='0.1.0',
+    version='0.2.0',
     description='Formal Logic Framework',
     long_description=read('README.md'),
     url='https://github.com/MasterOdin/Forseti',
@@ -42,7 +42,7 @@ setup(
 
     # Dependencies
     install_requires=[
-        'nose'
+        'nose', 'pylint', 'colorama'
     ],
 
     # Contents

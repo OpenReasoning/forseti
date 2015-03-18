@@ -9,8 +9,6 @@ class Predicate(object):
     """
     def __init__(self, *kwargs):
         self.args = []
-        self.name = ""
-        self.type = None
 
         for kwarg in kwargs:
             if not isinstance(kwarg, Predicate):
@@ -49,13 +47,28 @@ class Predicate(object):
         """
         return self.get_print()
 
+    def __eq__(self, other):
+        if type(self) == type(other):
+            if self.argument_number() == other.argument_number():
+                for i in range(self.argument_number()):
+                    if self.args[i] != other.args[i]:
+                        return False
+        return True
+
+    def __ne__(self, other):
+        return not self == other
+
 
 class Atomic(Predicate):
     """
     Atomic predicates. Makes up base of other predicates
     """
+    name = ""
+
     def __init__(self, arg):
         super(Atomic, self).__init__()
+        if type(arg) != str:
+            raise TypeError(str(arg) + " is not a string/atomic")
         self.args.append(arg)
 
     @staticmethod
@@ -73,6 +86,8 @@ class Not(Predicate):
     """
     Not (negation) Predicate
     """
+    name = "not"
+
     def __init__(self, arg):
         super(Not, self).__init__(arg)
         self.args.append(arg)
@@ -92,6 +107,8 @@ class And(Predicate):
     """
     And Predicate
     """
+    name = "and"
+
     def __init__(self, arg1, arg2):
         super(And, self).__init__(arg1, arg2)
         self.args.append(arg1)
@@ -114,6 +131,8 @@ class Or(Predicate):
     """
     Or Predicate
     """
+    name = "or"
+
     def __init__(self, arg1, arg2):
         super(Or, self).__init__(arg1, arg2)
         self.args.append(arg1)
@@ -136,6 +155,8 @@ class Implies(Predicate):
     """
     Implies (Material Conditional) Predicate
     """
+    name = "implies"
+
     def __init__(self, arg1, arg2):
         super(Implies, self).__init__(arg1, arg2)
         self.args.append(arg1)
@@ -158,6 +179,8 @@ class Equiv(Predicate):
     """
     Equiv(alence) Predicate
     """
+    name = "equiv"
+
     def __init__(self, arg1, arg2):
         super(Equiv, self).__init__(arg1, arg2)
         self.args.append(arg1)

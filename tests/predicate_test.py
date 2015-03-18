@@ -120,3 +120,8 @@ def test_non_equality():
     pred_and = And(pred_a, pred_b)
     pred_or = Or(pred_and, pred_b)
     assert pred_or != Or(And(Atomic('a'), Atomic('b')), Atomic('a'))
+
+
+@raises(TypeError)
+def test_bad_atomic():
+    Atomic(Atomic('a'))

@@ -1,74 +1,84 @@
 """
-Parser for converting plain-text to Forseti Predicates
+Parser for converting plain-text to Forseti formula
 """
 
-from forseti.predicate import Atomic, Not, And, Or, Implies, Equiv
+from forseti.formula import Symbol, Not, And, Or, Implies, Equiv, LogicalOperator
 
 
-def parse(string):
+def parse(statement):
     """
-    Parse a plain-text string into Forseti implementation
+    Parse a plain-text string into Forseti formula
 
-    :param string:
+    TODO: raise exception on invalid formulas
+
+    :param statement:
     :return: Predicate
     """
-    string = string.replace(" ", "")
+    if isinstance(statement, LogicalOperator) or isinstance(statement, Symbol):
+        return statement
 
-    if len(string) == 0 or string == "()":
-        return None
+    original = statement
+    statement = statement.replace(" ", "")
 
-    while string[0] == "(" and string[-1] == ")":
-        string = string[1:-1]
+    if statement.count("(") > statement.count(")"):
+        raise SyntaxError("Invalid formula (check parentheses): " + original)
 
-    if string.lower().startswith("and"):
-        predicate = And
-    elif string.lower().startswith("or"):
-        predicate = Or
-    elif string.lower().startswith("implies"):
-        predicate = Implies
-    elif string.lower().startswith("equiv"):
-        predicate = Equiv
-    elif string.lower().startswith("not"):
-        predicate = Not
+    if len(statement) == 0 or statement == "()":
+        raise SyntaxError("Invalid formula: " + original)
+
+    while statement[0] == "(" and statement[-1] == ")":
+        statement = statement[1:-1]
+
+    if statement.lower().startswith("and"):
+        parse_type = And
+    elif statement.lower().startswith("or"):
+        parse_type = Or
+    elif statement.lower().startswith("implies"):
+        parse_type = Implies
+    elif statement.lower().startswith("equiv"):
+        parse_type = Equiv
+    elif statement.lower().startswith("not"):
+        parse_type = Not
     else:
-        predicate = Atomic
-    return _parse_predicate(string, predicate)
+        parse_type = Symbol
+    parsed_statement = _parse_statement(statement, parse_type)
+    if parsed_statement is None:
+        raise SyntaxError("Invalid formula: " + original)
+    else:
+        return parsed_statement
 
 
-def _parse_predicate(string, predicate):
+def _parse_statement(statement, parse_type):
     """
-    Break the string into arguments to pass into the given predicate
+    Break the string into arguments to pass into the given statement
 
-    :param string:
-    :param predicate:
+    :param statement:
+    :param statement:
     :return:
     """
-    string = string[len(predicate.name):]
-    if len(string) > 2 and string[0] == "(" and string[-1] == ")":
-        string = string[1:-1]
-        arg_list = []
-        status = _get_arg_list(arg_list, string)
-        if status is False or len(arg_list) != And.argument_number():
-            return None
-
-        # pylint: disable=star-args
-        return predicate(*arg_list)
-    elif predicate == Atomic:
-        atomic = ""
-        for char in string:
+    if parse_type == Symbol:
+        symbol_string = ""
+        for char in statement:
             if not char.isalnum():
                 return None
-            atomic += char
-
-        return Atomic(atomic)
-
+            symbol_string += char
+        return Symbol(symbol_string)
     else:
-        return None
+        statement = statement[len(parse_type.name):]
+        if len(statement) > 2 and statement[0] == "(" and statement[-1] == ")":
+            statement = statement[1:-1]
+            arg_list = []
+            status = _get_arg_list(arg_list, statement)
+            if status is False or len(arg_list) != parse_type.arity:
+                return None
+            return parse_type(*arg_list)
+        else:
+            return None
 
 
 def _get_arg_list(arg_list, string):
     """
-    get the argument list of a 2+ argument predicate
+    get the argument list of a 2+ argument statement
 
     :param arg_list:
     :param string:
@@ -85,10 +95,10 @@ def _get_arg_list(arg_list, string):
         elif char == ")" and open_p >= 0:
             open_p -= 1
 
-        if not char.isalnum() and (char != "," and open_p == 0):
+        if not char.isalnum() and ((char != "," and char != ")") and open_p == 0):
             return False
 
-        if (char == "," or char == ")") and open_p == 0:
+        if char == "," and open_p == 0:
             arg_list.append(parse(arg))
             arg = ""
         else:

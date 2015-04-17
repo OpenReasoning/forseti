@@ -42,7 +42,7 @@ setup(
 
     # Dependencies
     install_requires=[
-        'nose', 'pylint', 'colorama'
+        'nose'
     ],
 
     # Contents

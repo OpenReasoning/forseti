@@ -12,3 +12,11 @@ from forseti import parser
 from forseti.predicate import Atomic, And
 assert parser.parse(and(a, b)) == And(Atomic('a'), Atomic('b'))
 ```
+
+##Goals:
+Using Forseti to implement the following programs/applications  
+
+1. Automated Theorem Prover (done in Forseti core)  
+1. [Implement Davis-Putnam Algorithm](http://en.wikipedia.org/wiki/Davis%E2%80%93Putnam_algorithm)  
+1. [Truth Trees](http://legacy.earlham.edu/~peters/courses/log/treeprop.htm)  
+1. [Slate](http://rair.cogsci.rpi.edu/projects/slate/)/[Fitch](http://en.wikipedia.org/wiki/Fitch-style_calculus)  

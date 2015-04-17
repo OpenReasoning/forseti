@@ -7,9 +7,10 @@ python:
 install:
   - "pip install -r requirements.txt"
   - "pip install coveralls"
+  - "pip install pylint_runner"
 # command to run tests
 script:
   - nosetests -v --with-coverage
-  - "python pylint_runner.py"
+  - pylint_runner
 after_success:
   - coveralls

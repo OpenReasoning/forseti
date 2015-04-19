@@ -4,6 +4,7 @@ setup routine
 """
 from setuptools import setup, find_packages
 import os
+from pip.req import parse_requirements
 
 
 def read(*paths):
@@ -11,10 +12,14 @@ def read(*paths):
     with open(os.path.join(*paths), 'r') as open_file:
         return open_file.read()
 
+
+def get_requirements():
+    """Get requirements from requirements.txt file"""
+    install_reqs = parse_requirements("requirements.txt")
+    return [str(ir.req) for ir in install_reqs]
+
 setup(
-
     # Metadata
-
     name='Forseti',
     version='0.2.0',
     description='Formal Logic Framework',
@@ -41,9 +46,7 @@ setup(
     ],
 
     # Dependencies
-    install_requires=[
-        'nose'
-    ],
+    tests_require=get_requirements(),
 
     # Contents
     packages=find_packages(exclude=['tests*']),

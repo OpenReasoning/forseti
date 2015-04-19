@@ -142,7 +142,8 @@ class Prover(object):
                         new_cnf.sort()
                         if len(new_cnf) == 0:
                             return True
-                        if new_cnf not in self._cnf_list:
+                        if not util.is_tautology(new_cnf) and \
+                           new_cnf not in self._cnf_list:
                             have_resolve = True
                             self._cnf_list.append(new_cnf)
                             checked.append([i, len(self._cnf_list)-1])
@@ -164,11 +165,9 @@ class Prover(object):
         i = 0
         while i < len(self._cnf_list):
             cnf = self._cnf_list[i]
-            for j in range(len(cnf)):
-                if Prover._negate_symbol(cnf[j]) in cnf:
-                    self._cnf_list.pop(i)
-                    i -= 1
-                    break
+            if util.is_tautology(cnf):
+                self._cnf_list.pop(i)
+                i -= 1
             i += 1
 
     @staticmethod

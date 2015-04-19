@@ -4,9 +4,10 @@ Util functions utilized by Forseti library (or for testing it)
 
 from __future__ import print_function
 from forseti.formula import Not, LogicalOperator, Symbol
+import sys
 
 
-def print_cnf_list(formulas, depth=0, end="\n"):
+def print_cnf_list(formulas, depth=0, end="\n", out=sys.stdout):
     """
     prints out the CNF list
 
@@ -19,12 +20,12 @@ def print_cnf_list(formulas, depth=0, end="\n"):
             output += print_cnf_list(i, depth=depth+1)
         else:
             output += str(i)
-        output += ","
-    output = output[:-1] + "]"
+        output += ", "
+    output = output[:-2] + "]"
     if depth > 0:
         return output
     else:
-        print(output, end=end)
+        out.write(output+end)
 
 
 def negate_formula(formula):
@@ -41,3 +42,18 @@ def negate_formula(formula):
     else:
         raise TypeError(str(formula) + " is not a valid formula "
                                        "(Symbol or Operator)")
+
+
+def is_tautology(cnf):
+    """
+    Checks if a given CNF is a tautology
+    :return boolean: True if it is a tautology, false otherwise
+    """
+    if not isinstance(cnf, list) or len(cnf) <= 1:
+        return False
+    i = 0
+    while i < len(cnf):
+        if negate_formula(cnf[i]) in cnf:
+            return True
+        i += 1
+    return False

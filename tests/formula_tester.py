@@ -4,7 +4,7 @@ Tests to ensure that LogicalOperator representation works as expected
 """
 
 from nose.tools import raises, assert_equal, assert_true, assert_not_equal, \
-    assert_false, assert_less, assert_greater
+    assert_false, assert_less, assert_greater, assert_greater_equal
 from forseti.formula import Symbol, LogicalOperator, Not, And, Or, Implies, \
     Equiv
 
@@ -156,3 +156,7 @@ def test_operator_not_lt_symbol():
 
 def test_operator_gt_symbol():
     assert_greater(Not(Symbol("a")), Symbol("b"))
+
+
+def test_operator_ge_symbol():
+    assert_greater_equal(Not(Symbol("a")), Not(Symbol("a")))

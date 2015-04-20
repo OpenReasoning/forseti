@@ -1,14 +1,19 @@
 language: python
 python:
-- '2.7'
-- '3.3'
-- '3.4'
+  - '2.7'
+  - '3.3'
+  - '3.4'
 install:
-- pip install -r requirements.txt
-- pip install coveralls
-- pip install pylint_runner
+  - pip install -r requirements.txt
+  - pip install coveralls
+  - pip install pylint_runner
 script:
-- nosetests -v --with-coverage
-- pylint_runner
+  - nosetests -v --with-coverage
+  - pylint_runner
 after_success:
-- coveralls
+  - coveralls
+deploy:
+  provider: pypi
+  user: MasterOdin
+  password:
+    secure: CAb8qpcQPH/f706F/G1dLiTe1Re+nfXD3oB3ubCSBcwUBwEs3hPXMDuEf//oL+HnmK280hXpkfUdcPqV44yxZb8expmjZdMcn4f33YZBAiTq8Q45qtNs3KgaIZja2DJWcdPwX4CRr8Ukj2eWPzHBabVLAkmtGpL5s0QHxWLlhBo=

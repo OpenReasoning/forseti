@@ -2,7 +2,7 @@
 from six import StringIO
 from forseti.formula import Symbol, Not
 import forseti.util as util
-from nose.tools import assert_equal, assert_true, assert_false
+from nose.tools import assert_equal, assert_false, assert_true, raises
 
 
 def test_print_cnf_list():
@@ -29,6 +29,9 @@ def test_negate_not():
     negate = util.negate_formula(Not(Symbol("a")))
     assert_equal(Symbol("a"), negate)
 
+@raises(TypeError)
+def test_negate_error():
+    util.negate_formula("a")
 
 def test_is_tautology():
     cnf = list()

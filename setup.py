@@ -16,12 +16,12 @@ def read(*paths):
 def get_requirements():
     """Get requirements from requirements.txt file"""
     install_reqs = parse_requirements("requirements.txt")
-    return [str(ir.req) for ir in install_reqs]
+    return [str(ir.req) for ir in install_reqs[1:]]
 
 setup(
     # Metadata
     name='Forseti',
-    version='0.2.0',
+    version='0.5.0',
     description='Formal Logic Framework',
     long_description=read('README.md'),
     url='https://github.com/MasterOdin/Forseti',
@@ -31,7 +31,7 @@ setup(
     author_email='matt.peveler@gmail.com',
 
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: MIT License',
@@ -46,6 +46,7 @@ setup(
     ],
 
     # Dependencies
+    install_require=['pip'],
     tests_require=get_requirements(),
 
     # Contents

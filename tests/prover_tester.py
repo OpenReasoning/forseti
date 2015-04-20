@@ -16,7 +16,7 @@ Batch 2 contained only valid
 
 from forseti.prover import Prover
 from forseti import parser
-from nose.tools import assert_true, assert_false
+from nose.tools import assert_false, assert_true, raises
 from nose.plugins.skip import SkipTest
 
 
@@ -133,3 +133,15 @@ def test_prover_invalid():
     prover.add_formula(parser.parse("not(equiv(A, B))"))
     prover.add_goal(parser.parse("equiv(not(A), not(B))"))
     assert_false(prover.run_prover())
+
+
+@raises(TypeError)
+def test_prover_formula_error():
+    prover = Prover()
+    prover.add_formula(None)
+
+
+@raises(Exception)
+def test_prover_no_goal_error():
+    prover = Prover()
+    prover.run_prover()

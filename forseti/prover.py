@@ -1,9 +1,10 @@
 """
 Automated Theorem Prover within Forseti
 """
+# pylint: disable=fixme
 from __future__ import print_function
 from copy import deepcopy
-from forseti.formula import Symbol, Not, And, Or
+from forseti.formula import Not, And, Or
 from forseti import converter, parser
 import forseti.util as util
 
@@ -55,6 +56,7 @@ class Prover(object):
         :return:
         """
         if len(self.goals) == 0:
+            # TODO: give this a better exception class
             raise Exception("You need at least one goal!")
 
         for formula in self.formulas:
@@ -169,17 +171,3 @@ class Prover(object):
                 self._cnf_list.pop(i)
                 i -= 1
             i += 1
-
-    @staticmethod
-    def _negate_symbol(symbol):
-        """
-
-        :param symbol:
-        :return:
-        """
-        if isinstance(symbol, Not):
-            return symbol.args[0]
-        elif isinstance(symbol, Symbol):
-            return Not(symbol)
-        else:
-            raise TypeError(str(symbol) + " is not a Symbol or Not")

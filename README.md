@@ -1,5 +1,10 @@
 #Forseti
-[![Build Status](https://travis-ci.org/MasterOdin/Forseti.svg?branch=master)](https://travis-ci.org/MasterOdin/Forseti) [![Coverage Status](https://coveralls.io/repos/MasterOdin/Forseti/badge.svg?branch=master)](https://coveralls.io/r/MasterOdin/Forseti?branch=master)
+[![Build Status](https://travis-ci.org/MasterOdin/Forseti.svg?branch=master)](https://travis-ci.org/MasterOdin/Forseti) 
+[![Coverage Status](https://coveralls.io/repos/MasterOdin/Forseti/badge.svg?branch=master)](https://coveralls.io/r/MasterOdin/Forseti?branch=master) 
+[![Latest Version](https://pypip.in/version/Forseti/badge.svg)](https://pypi.python.org/pypi/Forseti/)
+[![Development Status](https://pypip.in/status/Forseti/badge.svg)](https://pypi.python.org/pypi/Forseti/)
+[![Supported Python versions](https://pypip.in/py_versions/Forseti/badge.svg)](https://pypi.python.org/pypi/Forseti/)
+[![License](https://pypip.in/license/Forseti/badge.svg)](https://pypi.python.org/pypi/Forseti/)
 
 A Formal Logic framework for a variety of applications.
 

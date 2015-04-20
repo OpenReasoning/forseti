@@ -4,19 +4,12 @@ setup routine
 """
 from setuptools import setup, find_packages
 import os
-from pip.req import parse_requirements
 
 
 def read(*paths):
     """Build a file path from *paths* and return the contents."""
     with open(os.path.join(*paths), 'r') as open_file:
         return open_file.read()
-
-
-def get_requirements():
-    """Get requirements from requirements.txt file"""
-    install_reqs = parse_requirements("requirements.txt")
-    return [str(ir.req) for ir in install_reqs[1:]]
 
 setup(
     # Metadata
@@ -46,8 +39,7 @@ setup(
     ],
 
     # Dependencies
-    install_require=['pip'],
-    tests_require=get_requirements(),
+    tests_require=['nose', 'six'],
 
     # Contents
     packages=find_packages(exclude=['tests*']),

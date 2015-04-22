@@ -142,6 +142,10 @@ def test_symbol_lt_operator_1():
     assert_less(Symbol('a'), Not(Symbol('a')))
 
 
+def test_symbol_ge_operator_1():
+    assert_greater_equal(Symbol('b'), Symbol('a'))
+
+
 def test_operator_not_lt_symbol():
     assert_false(Not(Symbol("a")) < Symbol("b"))
 

@@ -31,18 +31,7 @@ def parse(statement):
     while statement[0] == "(" and statement[-1] == ")":
         statement = statement[1:-1]
 
-    if statement.lower().startswith("and"):
-        parse_type = And
-    elif statement.lower().startswith("or"):
-        parse_type = Or
-    elif statement.lower().startswith("iff"):
-        parse_type = Iff
-    elif statement.lower().startswith("if"):
-        parse_type = If
-    elif statement.lower().startswith("not"):
-        parse_type = Not
-    else:
-        parse_type = Symbol
+    parse_type = _get_type(statement)
     parsed_statement = _parse_statement(statement, parse_type)
     if parsed_statement is None:
         raise SyntaxError("Invalid formula: " + original)
@@ -108,3 +97,26 @@ def _get_arg_list(arg_list, string):
         i += 1
     arg_list.append(parse(arg))
     return True
+
+
+def _get_type(statement):
+    """
+    Get the formula type for parsing
+
+    :param statement:
+    :return:
+    """
+    if statement.lower().startswith("and"):
+        parse_type = And
+    elif statement.lower().startswith("or"):
+        parse_type = Or
+    elif statement.lower().startswith("iff"):
+        parse_type = Iff
+    elif statement.lower().startswith("if"):
+        parse_type = If
+    elif statement.lower().startswith("not"):
+        parse_type = Not
+    else:
+        parse_type = Symbol
+    return parse_type
+

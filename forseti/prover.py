@@ -4,7 +4,7 @@ Automated Theorem Prover within Forseti
 # pylint: disable=fixme
 from __future__ import print_function
 from copy import deepcopy
-from forseti.formula import Symbol, LogicalOperator, Not, And, Or
+from forseti.formula import Not, And, Or
 from forseti import converter, parser
 import forseti.util as util
 
@@ -40,7 +40,7 @@ class Prover(object):
         self._add_statement(Not(deepcopy(statement)), self._goals)
 
     @staticmethod
-    def _add_statement(statement, add_to_list, additional=None):
+    def _add_statement(statement, add_to_list):
         """
 
         :param statement:

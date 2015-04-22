@@ -15,7 +15,7 @@ Batch 2 contained only valid
 # pylint: disable=missing-docstring
 
 from forseti.prover import Prover
-from nose.tools import assert_false, assert_true, raises
+from nose.tools import assert_false, assert_true
 
 
 def test_prop_logic_1_1_1():

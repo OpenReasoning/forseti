@@ -14,9 +14,9 @@ def read(*paths):
 setup(
     # Metadata
     name='forseti',
-    version='0.6.0',
+    version='0.6.5',
     description='Formal Logic Framework',
-    long_description=read('README.md'),
+    long_description=read('README.rst'),
     url='https://github.com/MasterOdin/forseti',
     download_url='https://pypi.python.org/pypi/forseti',
     license='MIT',

@@ -16,7 +16,7 @@ def test_print_cnf_list():
     cnf.append([not_a, not_b])
     writer = StringIO()
     util.print_cnf_list(cnf, out=writer)
-    cnf_list = "[[a, b], [not(b), a], [not(a), not(b)]]\n"
+    cnf_list = "[[a, b], [~b, a], [~a, ~b]]\n"
     assert_equal(cnf_list, writer.getvalue())
 
 

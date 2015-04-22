@@ -1,7 +1,7 @@
 """
 Predicate for use within Forseti
 """
-
+# pylint: disable=too-few-public-methods
 
 class Symbol(object):
     """
@@ -16,23 +16,14 @@ class Symbol(object):
         self.arg = arg
         self. args = [arg]
 
-    def get_print(self):
-        """
-        Return string representation of predicate for printing
-        """
+    def __str__(self):
         return self.arg
 
-    def get_pretty_print(self):
+    def __repr__(self):
         """
-        see get_print()
+        see __repr__()
         """
-        return self.get_print()
-
-    def __str__(self):
-        """
-        see get_print()
-        """
-        return self.get_print()
+        return self.arg
 
     def __eq__(self, other):
         """
@@ -86,29 +77,16 @@ class LogicalOperator(object):
             if not isinstance(kwarg, LogicalOperator) and not isinstance(kwarg, Symbol):
                 raise TypeError(str(kwarg) + " is not an Operator or Symbol")
 
-    def get_print(self):
-        """
-        Return string representation of predicate for printing
-
-        :return string: string representation
-        """
-        raise NotImplementedError("Not implemented yet")
-
-    def get_pretty_print(self):
-        """
-        Return string representation that's more human readable for the operator
-
-        :return string: string representation
-        """
-        raise NotImplementedError("Not implemented yet")
-
     def __str__(self):
-        """
-        Return get_print() for predicate
+        raise NotImplementedError("Not implemented yet")
 
-        :return: get_print()
+    def __repr__(self):
         """
-        return self.get_print()
+        Return __repr__() for predicate
+
+        :return: __repr__()
+        """
+        raise NotImplementedError("Not implemented yet")
 
     def __eq__(self, other):
         if isinstance(self, type(other)):
@@ -155,11 +133,11 @@ class Not(LogicalOperator):
         super(Not, self).__init__(arg)
         self.args.append(arg)
 
-    def get_print(self):
-        return "not("+self.args[0].get_print()+")"
+    def __repr__(self):
+        return "not("+self.args[0].__repr__()+")"
 
-    def get_pretty_print(self):
-        return "~"+self.args[0].get_pretty_print()
+    def __str__(self):
+        return "~"+self.args[0].__str__()
 
 
 class And(LogicalOperator):
@@ -174,13 +152,13 @@ class And(LogicalOperator):
         self.args.append(arg1)
         self.args.append(arg2)
 
-    def get_print(self):
-        return "and(" + self.args[0].get_print() + ", " + \
-               self.args[1].get_print() + ")"
+    def __repr__(self):
+        return "and(" + self.args[0].__repr__() + ", " + \
+               self.args[1].__repr__() + ")"
 
-    def get_pretty_print(self):
-        return "(" + self.args[0].get_pretty_print() + " & " + \
-               self.args[1].get_pretty_print() + ")"
+    def __str__(self):
+        return "(" + self.args[0].__str__() + " & " + \
+               self.args[1].__str__() + ")"
 
 
 class Or(LogicalOperator):
@@ -195,52 +173,52 @@ class Or(LogicalOperator):
         self.args.append(arg1)
         self.args.append(arg2)
 
-    def get_print(self):
-        return "or(" + self.args[0].get_print() + ", " \
-               + self.args[1].get_print() + ")"
+    def __repr__(self):
+        return "or(" + self.args[0].__repr__() + ", " \
+               + self.args[1].__repr__() + ")"
 
-    def get_pretty_print(self):
-        return "(" + self.args[0].get_pretty_print() + " | " \
-               + self.args[1].get_pretty_print() + ")"
+    def __str__(self):
+        return "(" + self.args[0].__str__() + " | " \
+               + self.args[1].__str__() + ")"
 
 
-class Implies(LogicalOperator):
+class If(LogicalOperator):
     """
     Implies (Material Conditional) Predicate
     """
-    name = "implies"
+    name = "if"
     arity = 2
 
     def __init__(self, arg1, arg2):
-        super(Implies, self).__init__(arg1, arg2)
+        super(If, self).__init__(arg1, arg2)
         self.args.append(arg1)
         self.args.append(arg2)
 
-    def get_print(self):
-        return "implies(" + self.args[0].get_print() + ", " \
-               + self.args[1].get_print() + ")"
+    def __repr__(self):
+        return "if(" + self.args[0].__repr__() + ", " \
+               + self.args[1].__repr__() + ")"
 
-    def get_pretty_print(self):
-        return "(" + self.args[0].get_pretty_print() + " -> " \
-               + self.args[1].get_pretty_print() + ")"
+    def __str__(self):
+        return "(" + self.args[0].__str__() + " -> " \
+               + self.args[1].__str__() + ")"
 
 
-class Equiv(LogicalOperator):
+class Iff(LogicalOperator):
     """
     Equiv(alence) Predicate
     """
-    name = "equiv"
+    name = "iff"
     arity = 2
 
     def __init__(self, arg1, arg2):
-        super(Equiv, self).__init__(arg1, arg2)
+        super(Iff, self).__init__(arg1, arg2)
         self.args.append(arg1)
         self.args.append(arg2)
 
-    def get_print(self):
-        return "equiv(" + self.args[0].get_print() + ", " \
-               + self.args[1].get_print() + ")"
+    def __repr__(self):
+        return "iff(" + self.args[0].__repr__() + ", " \
+               + self.args[1].__repr__() + ")"
 
-    def get_pretty_print(self):
-        return "(" + self.args[0].get_pretty_print() + " <-> " \
-               + self.args[1].get_pretty_print() + ")"
+    def __str__(self):
+        return "(" + self.args[0].__str__() + " <-> " \
+               + self.args[1].__str__() + ")"

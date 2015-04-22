@@ -1,7 +1,7 @@
 # pylint: disable=missing-docstring
 
 from forseti import parser
-from forseti.formula import Symbol, Not, And, Or, Implies, Equiv
+from forseti.formula import Symbol, Not, And, Or, If, Iff
 from nose.tools import assert_equal, raises
 
 
@@ -25,19 +25,19 @@ def test_parse_or():
     assert_equal(statement, Or(Symbol("a"), Symbol("b")))
 
 
-def test_parse_implies():
-    statement = parser.parse("implies(a, b)")
-    assert_equal(statement, Implies(Symbol("a"), Symbol("b")))
+def test_parse_if():
+    statement = parser.parse("if(a, b)")
+    assert_equal(statement, If(Symbol("a"), Symbol("b")))
 
 
-def test_parse_equiv():
-    statement = parser.parse("equiv(a, b)")
-    assert_equal(statement, Equiv(Symbol("a"), Symbol("b")))
+def test_parse_iff():
+    statement = parser.parse("iff(a, b)")
+    assert_equal(statement, Iff(Symbol("a"), Symbol("b")))
 
 
-def test_parse_equiv_2():
-    statement = parser.parse("equiv(not(A), not(B))")
-    assert_equal(statement, Equiv(Not(Symbol("A")), Not(Symbol("B"))))
+def test_parse_iff_2():
+    statement = parser.parse("iff(not(A), not(B))")
+    assert_equal(statement, Iff(Not(Symbol("A")), Not(Symbol("B"))))
 
 
 def test_extra_paranthesis():
@@ -49,6 +49,7 @@ def test_extra_paranthesis():
 def test_empty_parse():
     parser.parse("")
 
+
 @raises(SyntaxError)
 def test_bad_symbol():
     parser.parse("&a")
@@ -57,3 +58,8 @@ def test_bad_symbol():
 @raises(SyntaxError)
 def test_bad_paranthesis():
     parser.parse("and((a)),b)")
+
+
+@raises(SyntaxError)
+def test_bad_paranthesis_left():
+    parser.parse("and(a,b")

@@ -1,6 +1,6 @@
 # pylint: disable=missing-docstring
 
-from forseti.formula import Symbol, Not, And, Or, Equiv
+from forseti.formula import Symbol, Not, And, Or, Iff
 from forseti import converter
 from nose.tools import assert_equal, raises
 
@@ -13,7 +13,7 @@ def test_cnf_converter_symbol():
 
 
 def test_cnf_converter_equiv():
-    statement = Equiv(Symbol("a"), Symbol("b"))
+    statement = Iff(Symbol("a"), Symbol("b"))
     statement = converter.convert_to_cnf(statement)
     expected = And(Or(Not(Symbol("a")), Symbol("b")),
                    Or(Not(Symbol("b")), Symbol("a")))
@@ -49,7 +49,7 @@ def test_cnf_negation():
 
 
 def test_convert_to_cnf():
-    statement = Not(Equiv(Symbol("a"), Symbol("c")))
+    statement = Not(Iff(Symbol("a"), Symbol("c")))
     statement = converter.convert_to_cnf(statement)
     a_symbol = Symbol("a")
     c_symbol = Symbol("c")

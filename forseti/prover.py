@@ -139,8 +139,12 @@ class Prover(object):
                         ind = self._cnf_list[j].index(negation)
                         new_cnf = self._cnf_list[i][:k]
                         new_cnf += self._cnf_list[i][(k+1):]
-                        new_cnf += self._cnf_list[j][:ind]
-                        new_cnf += self._cnf_list[j][(ind+1):]
+                        for cnf in self._cnf_list[j][:ind]:
+                            if cnf not in new_cnf:
+                                new_cnf.append(cnf)
+                        for cnf in self._cnf_list[j][(ind+1):]:
+                            if cnf not in new_cnf:
+                                new_cnf.append(cnf)
                         new_cnf.sort()
                         if len(new_cnf) == 0:
                             return True

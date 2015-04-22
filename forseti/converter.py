@@ -2,7 +2,7 @@
 Converter functions for Forseti statements (to CNF)
 """
 
-from forseti.formula import LogicalOperator, Symbol, Not, And, Or, Implies, Equiv
+from forseti.formula import LogicalOperator, Symbol, Not, And, Or, If, Iff
 
 
 def convert_to_cnf(statement):
@@ -41,8 +41,8 @@ def _convert_equiv(statement):
     for i in range(len(args)):
         args[i] = _convert_equiv(args[i])
 
-    if isinstance(statement, Equiv):
-        statement = And(Implies(args[0], args[1]), Implies(args[1], args[0]))
+    if isinstance(statement, Iff):
+        statement = And(If(args[0], args[1]), If(args[1], args[0]))
 
     return statement
 
@@ -60,7 +60,7 @@ def _convert_implies(statement):
     for i in range(len(args)):
         args[i] = _convert_implies(args[i])
 
-    if isinstance(statement, Implies):
+    if isinstance(statement, If):
         statement = Or(Not(args[0]), args[1])
 
     return statement
@@ -126,7 +126,7 @@ def _is_cnf(statement, has_or=False):
     """
     if isinstance(statement, Symbol):
         return True
-    elif isinstance(statement, Implies) or isinstance(statement, Equiv):
+    elif isinstance(statement, If) or isinstance(statement, Iff):
         return False
     elif isinstance(statement, Or):
         has_or = True

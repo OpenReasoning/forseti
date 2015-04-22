@@ -2,7 +2,7 @@
 Parser for converting plain-text to Forseti formula
 """
 
-from forseti.formula import Symbol, Not, And, Or, Implies, Equiv, LogicalOperator
+from forseti.formula import Symbol, Not, And, Or, If, Iff, LogicalOperator
 
 
 def parse(statement):
@@ -33,10 +33,10 @@ def parse(statement):
         parse_type = And
     elif statement.lower().startswith("or"):
         parse_type = Or
-    elif statement.lower().startswith("implies"):
-        parse_type = Implies
-    elif statement.lower().startswith("equiv"):
-        parse_type = Equiv
+    elif statement.lower().startswith("iff"):
+        parse_type = Iff
+    elif statement.lower().startswith("if"):
+        parse_type = If
     elif statement.lower().startswith("not"):
         parse_type = Not
     else:

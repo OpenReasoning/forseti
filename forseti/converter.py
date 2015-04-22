@@ -126,8 +126,6 @@ def _is_cnf(statement, has_or=False):
     """
     if isinstance(statement, Symbol):
         return True
-    elif isinstance(statement, If) or isinstance(statement, Iff):
-        return False
     elif isinstance(statement, Or):
         has_or = True
     elif isinstance(statement, And) and has_or is True:

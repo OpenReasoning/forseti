@@ -3,6 +3,7 @@ Predicate for use within Forseti
 """
 # pylint: disable=too-few-public-methods
 
+
 class Symbol(object):
     """
     Symbols, smallest logical unit. Only accepts strings to label them

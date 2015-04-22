@@ -16,6 +16,8 @@ def parse(statement):
     """
     if isinstance(statement, LogicalOperator) or isinstance(statement, Symbol):
         return statement
+    elif statement is None or not isinstance(statement, str):
+        raise TypeError("Statement cannot be " + str(type(statement)))
 
     original = statement
     statement = statement.replace(" ", "")

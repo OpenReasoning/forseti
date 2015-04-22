@@ -13,11 +13,11 @@ def read(*paths):
 
 setup(
     # Metadata
-    name='Forseti',
+    name='forseti',
     version='0.6.0',
     description='Formal Logic Framework',
     long_description=read('README.md'),
-    url='https://github.com/MasterOdin/Forseti',
+    url='https://github.com/MasterOdin/forseti',
     download_url='https://pypi.python.org/pypi/forseti',
     license='MIT',
     author='Matthew Peveler',

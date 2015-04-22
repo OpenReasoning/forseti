@@ -16,4 +16,7 @@ deploy:
   provider: pypi
   user: MasterOdin
   password:
-    secure: CAb8qpcQPH/f706F/G1dLiTe1Re+nfXD3oB3ubCSBcwUBwEs3hPXMDuEf//oL+HnmK280hXpkfUdcPqV44yxZb8expmjZdMcn4f33YZBAiTq8Q45qtNs3KgaIZja2DJWcdPwX4CRr8Ukj2eWPzHBabVLAkmtGpL5s0QHxWLlhBo=
+    secure: excHXeFQRgQTC8cWuZvhRhdrNehCj3dgqORcQ8LgBQmn35yJT3gsFP4wdB7FYhDex2ir6PlQmz4gVOwSOaX5jHblhUHMlmJoJXKwRY29WZ/oqDjBZ1wmmSrp+J20Dl+YRBB4MTWtRCgvcCkZyget8RuEl3h42zyvuno6uJJQm/0=
+  on:
+    repo: MasterOdin/forseti
+    python: 3.3

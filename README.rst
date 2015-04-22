@@ -30,7 +30,7 @@ Installation
 
 From PyPI
 ~~~~~~~~~
-The SDK is available on `PyPI <https://pypi.python.org/pypi/forseti>`_.
+forseti is available on `PyPI <https://pypi.python.org/pypi/forseti>`_.
 
 ::
 
@@ -40,11 +40,10 @@ From source
 ~~~~~~~~~~~
 * Download the source code:
 
-  - ``$ git clone git@github.com:MasterOdin/forseti.git``
+::
 
-* Run the following command (may need to do this as root):
-
-  - ``$ python setup.py install``
+    $ git clone git@github.com:MasterOdin/forseti.git
+    $ python setup.py install
 
 Usage
 -----
@@ -75,7 +74,7 @@ Additionally, it also comes with a builtin prover that can validate a propositio
 
 Roadmap
 -------
-1. Formal Logic Prover
+1. First Order Logic Prover
 2. Optimizations
 
 Goals

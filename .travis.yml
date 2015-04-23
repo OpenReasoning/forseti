@@ -6,6 +6,7 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install coveralls
+  - pip install six
 script:
   - python setup.py test
   - nosetests -v --with-coverage

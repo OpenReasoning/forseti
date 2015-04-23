@@ -63,3 +63,18 @@ def test_bad_paranthesis():
 @raises(SyntaxError)
 def test_bad_paranthesis_left():
     parser.parse("and(a,b")
+
+
+@raises(SyntaxError)
+def test_wrong_number_arguments():
+    parser.parse("and(a)")
+
+
+@raises(SyntaxError)
+def test_invalid_formula():
+    parser.parse("not(a),")
+
+
+@raises(SyntaxError)
+def test_extra_comma():
+    parser.parse("and(a!,b)")

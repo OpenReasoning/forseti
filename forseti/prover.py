@@ -64,17 +64,11 @@ class Prover(object):
         for formula in self.formulas:
             converts = self._convert_formula(formula)
             for convert in converts:
-                if isinstance(convert, list):
-                    self._cnf_list += [convert]
-                else:
-                    self._cnf_list.append([convert])
+                self._cnf_list += [convert]
         for goal in self._goals:
             converts = self._convert_formula(goal)
             for convert in converts:
-                if isinstance(convert, list):
-                    self._cnf_list += [convert]
-                else:
-                    self._cnf_list.append([convert])
+                self._cnf_list += [convert]
 
         self._tautology_elimination()
         for i in range(len(self._cnf_list)):

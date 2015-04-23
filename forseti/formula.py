@@ -44,10 +44,8 @@ class Symbol(object):
     def __lt__(self, other):
         if isinstance(other, LogicalOperator):
             return True
-        elif isinstance(other, Symbol):
-            return self.arg < other.arg
         else:
-            return NotImplemented
+            return self.arg < other.arg
 
     def __le__(self, other):
         return self < other or self == other
@@ -104,14 +102,12 @@ class LogicalOperator(object):
     def __lt__(self, other):
         if isinstance(other, Symbol):
             return False
-        elif isinstance(other, LogicalOperator):
+        else:
             if isinstance(self, type(other)):
                 for i in range(self.arity):
                     if not self.args[i] < other.args[i]:
                         return False
                 return True
-        else:
-            return NotImplemented
 
     def __le__(self, other):
         return self < other or self == other

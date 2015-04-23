@@ -6,10 +6,8 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install coveralls
-  - pip install pylint_runner
 script:
   - nosetests -v --with-coverage
-  - pylint_runner
 after_success:
   - coveralls
 deploy:

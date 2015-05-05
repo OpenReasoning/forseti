@@ -262,6 +262,7 @@ def test_fol_logic_2_9():
     assert_false(prover.run_prover())
 
 
+@SkipTest
 @with_setup(setup)
 def test_fol_logic_2_10():
     prover = Prover()

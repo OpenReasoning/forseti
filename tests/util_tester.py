@@ -1,6 +1,6 @@
 # pylint: disable=missing-docstring
 from six import StringIO
-from forseti.formula import Symbol, Not
+from forseti.formula import Symbol, Not, Or
 import forseti.util as util
 from nose.tools import assert_equal, assert_false, assert_true, raises
 
@@ -20,6 +20,16 @@ def test_print_cnf_list():
     assert_equal(cnf_list, writer.getvalue())
 
 
+def test_cnf_list_as_disjunction():
+    cnf = [Symbol("a"), Symbol("b")]
+    expected = util.cnf_list_as_disjunction(cnf)
+    assert_equal(expected, Or(Symbol("a"), Symbol("b")))
+
+
+def test_cnf_list_empty():
+    assert_equal(util.cnf_list_as_disjunction([]), "$$FALSE")
+
+
 def test_negate_symbol():
     negate = util.negate_formula(Symbol("a"))
     assert_equal(Not(Symbol("a")), negate)
@@ -32,6 +42,7 @@ def test_negate_not():
 @raises(TypeError)
 def test_negate_error():
     util.negate_formula("a")
+
 
 def test_is_tautology():
     cnf = list()

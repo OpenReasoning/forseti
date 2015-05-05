@@ -1,13 +1,53 @@
-# pylint: disable=missing-docstring
 """
 Tests to ensure that LogicalOperator representation works as expected
 """
+# pylint: disable=missing-docstring,expression-not-assigned
 
 from nose.tools import raises, assert_equal, assert_true, assert_not_equal, \
     assert_false, assert_less, assert_greater, assert_greater_equal, \
     assert_less_equal
-from forseti.formula import Symbol, LogicalOperator, Not, And, Or, If, \
-    Iff
+from forseti.formula import Formula, Symbol, LogicalOperator, Not, And, Or, \
+    If, Iff
+
+
+@raises(NotImplementedError)
+def test_formula_str():
+    str(Formula())
+
+
+@raises(NotImplementedError)
+def test_formula_repr():
+    repr(Formula())
+
+
+@raises(NotImplementedError)
+def test_formula_eq():
+    Formula() == Formula()
+
+
+@raises(NotImplementedError)
+def test_formula_ne():
+    Formula() != Formula()
+
+
+@raises(NotImplementedError)
+def test_formula_lt():
+    Formula() < Formula()
+
+
+@raises(NotImplementedError)
+def test_formula_le():
+    Formula <= Formula()
+
+
+@raises(NotImplementedError)
+def test_formula_gt():
+    Formula() > Formula()
+
+
+@raises(NotImplementedError)
+def test_formula_ge():
+    Formula >= Formula()
 
 
 @raises(NotImplementedError)

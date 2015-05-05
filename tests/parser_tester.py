@@ -1,8 +1,15 @@
 # pylint: disable=missing-docstring
 
 from forseti import parser
-from forseti.formula import Symbol, Not, And, Or, If, Iff
-from nose.tools import assert_equal, raises
+from forseti.formula import Symbol, Not, And, Or, If, Iff, Universal, \
+    Predicate, Skolem, Herbrand
+from nose.tools import assert_equal, raises, with_setup
+
+
+def setup():
+    Predicate.reset()
+    Herbrand.reset()
+    Skolem.reset()
 
 
 def test_parse_symbol():
@@ -43,6 +50,16 @@ def test_parse_iff_2():
 def test_extra_paranthesis():
     statement = parser.parse("and((a),((b)))")
     assert_equal(And(Symbol("a"), Symbol("b")), statement)
+
+
+@with_setup(setup)
+def test_parse_fol_1():
+    statement = parser.parse("forall(x,if(A(x),and(B(x),C(x))))")
+    expected = Universal(Symbol("x"), If(Predicate("A", [Symbol("x")]),
+                                         And(Predicate("B", [Symbol("x")]),
+                                             Predicate("C", [Symbol("x")]))))
+
+    assert_equal(expected, statement)
 
 
 @raises(SyntaxError)

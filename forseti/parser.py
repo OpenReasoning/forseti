@@ -2,7 +2,8 @@
 Parser for converting plain-text to Forseti formula
 """
 
-from forseti.formula import Symbol, Not, And, Or, If, Iff, LogicalOperator
+from forseti.formula import Symbol, Not, And, Or, If, Iff, Formula, Predicate, \
+    Existential, Universal
 
 
 def parse(statement):
@@ -14,7 +15,18 @@ def parse(statement):
     :param statement:
     :return: Predicate
     """
-    if isinstance(statement, LogicalOperator) or isinstance(statement, Symbol):
+    return _parse(statement, [])
+
+
+def _parse(statement, formula_types):
+    """
+    Internal parse function
+
+    :param statement:
+    :param formula_types:
+    :return:
+    """
+    if isinstance(statement, Formula):
         return statement
     elif statement is None or not isinstance(statement, str):
         raise TypeError("Statement cannot be " + str(type(statement)))
@@ -31,15 +43,17 @@ def parse(statement):
     while statement[0] == "(" and statement[-1] == ")":
         statement = statement[1:-1]
 
-    parse_type = _get_type(statement)
-    parsed_statement = _parse_statement(statement, parse_type)
+    parse_type = _get_type(statement, formula_types)
+    formula_types.append(parse_type)
+    parsed_statement = _parse_statement(statement, parse_type, formula_types)
     if parsed_statement is None:
         raise SyntaxError("Invalid formula: " + original)
     else:
+        formula_types.pop(len(formula_types)-1)
         return parsed_statement
 
 
-def _parse_statement(statement, parse_type):
+def _parse_statement(statement, parse_type, formula_types):
     """
     Break the string into arguments to pass into the given statement
 
@@ -48,26 +62,32 @@ def _parse_statement(statement, parse_type):
     :return:
     """
     if parse_type == Symbol:
-        symbol_string = ""
-        for char in statement:
-            if not char.isalnum():
-                return None
-            symbol_string += char
-        return Symbol(symbol_string)
+        return _get_symbol(statement)
     else:
-        statement = statement[len(parse_type.name):]
+        type_name = _get_type_name(statement, parse_type)
+
+        statement = statement[len(type_name):]
+
         if len(statement) > 2 and statement[0] == "(" and statement[-1] == ")":
             statement = statement[1:-1]
             arg_list = []
-            status = _get_arg_list(arg_list, statement)
-            if status is False or len(arg_list) != parse_type.arity:
+            status = _get_arg_list(arg_list, statement, formula_types)
+            if parse_type != Predicate:
+                arity = parse_type.arity
+            else:
+                arity = Predicate.get_arity(type_name)
+
+            if status is False or (-1 < arity != len(arg_list)):
                 return None
-            return parse_type(*arg_list)
+            if parse_type == Predicate:
+                return parse_type(type_name, arg_list)
+            else:
+                return parse_type(*arg_list)
         else:
             return None
 
 
-def _get_arg_list(arg_list, string):
+def _get_arg_list(arg_list, string, formula_types):
     """
     get the argument list of a 2+ argument statement
 
@@ -82,7 +102,6 @@ def _get_arg_list(arg_list, string):
         char = string[i]
         if char == "(":
             open_p += 1
-
         elif char == ")" and open_p >= 0:
             open_p -= 1
 
@@ -90,33 +109,80 @@ def _get_arg_list(arg_list, string):
             return False
 
         if char == "," and open_p == 0:
-            arg_list.append(parse(arg))
+            arg_list.append(_parse(arg, formula_types))
             arg = ""
         else:
             arg += char
         i += 1
-    arg_list.append(parse(arg))
+    arg_list.append(_parse(arg, formula_types))
     return True
 
 
-def _get_type(statement):
+def _get_type(statement, formula_types):
     """
     Get the formula type for parsing
 
     :param statement:
     :return:
     """
-    if statement.lower().startswith("and"):
-        parse_type = And
-    elif statement.lower().startswith("or"):
-        parse_type = Or
-    elif statement.lower().startswith("iff"):
-        parse_type = Iff
-    elif statement.lower().startswith("if"):
-        parse_type = If
-    elif statement.lower().startswith("not"):
-        parse_type = Not
-    else:
-        parse_type = Symbol
+    parse_type = None
+    if Predicate not in formula_types:
+        if statement.lower().startswith("and"):
+            parse_type = And
+        elif statement.lower().startswith("or"):
+            parse_type = Or
+        elif statement.lower().startswith("iff"):
+            parse_type = Iff
+        elif statement.lower().startswith("if"):
+            parse_type = If
+        elif statement.lower().startswith("not"):
+            parse_type = Not
+        elif statement.lower().startswith("exists"):
+            parse_type = Existential
+        elif statement.lower().startswith("forall"):
+            parse_type = Universal
+    if parse_type is None:
+        if "(" in statement.lower():
+            parse_type = Predicate
+        else:
+            parse_type = Symbol
+
     return parse_type
 
+
+def _get_symbol(statement):
+    """
+    Gets the symbol for a statement
+
+    :param statement:
+    :return:
+    """
+    symbol_string = ""
+    for char in statement:
+        if not char.isalnum():
+            return None
+        symbol_string += char
+    return Symbol(symbol_string)
+
+
+def _get_type_name(statement, parse_type):
+    """
+    Get the type's name
+
+    :param statement:
+    :param parse_type:
+    :return:
+    """
+    if parse_type == Predicate:
+        type_name = ""
+        for char in statement:
+            if char == "(":
+                break
+            type_name += char
+    else:
+        type_name = parse_type.name
+    return type_name
+
+if __name__ == "__main__":
+    p = parse("forall(x,if(S(x),exists(y,and(S(y),forall(z,iff(B(z,y),and(B(z,x),B(z,z))))))))")
+    print(p)

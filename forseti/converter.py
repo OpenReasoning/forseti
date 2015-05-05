@@ -2,7 +2,9 @@
 Converter functions for Forseti statements (to CNF)
 """
 
-from forseti.formula import LogicalOperator, Symbol, Not, And, Or, If, Iff
+from forseti.formula import Formula, Symbol, LogicalOperator, Not, And, Or, \
+    If, Iff, Quantifier, Existential, Skolem, Universal, Herbrand
+import forseti.parser as parser
 
 
 def convert_to_cnf(statement):
@@ -14,13 +16,17 @@ def convert_to_cnf(statement):
     """
     if isinstance(statement, Symbol):
         return statement
-    elif not isinstance(statement, LogicalOperator):
+    elif not isinstance(statement, Formula):
         raise TypeError(str(statement) + " is not a Symbol or LogicalOperator "
                                          "Object. Use forseti.parser first")
 
-    statement = _convert_equiv(statement)
-    statement = _convert_implies(statement)
+    statement = _convert_iff(statement)
+    while not _is_pnf(statement):
+        statement = _convert_pnf(statement)
+    statement = _convert_if(statement)
     statement = _distribute_not(statement)
+    statement = _skolemization(statement)
+    statement = _herbrandization(statement)
 
     while not _is_cnf(statement):
         statement = _distribute_or(statement)
@@ -28,7 +34,7 @@ def convert_to_cnf(statement):
     return statement
 
 
-def _convert_equiv(statement):
+def _convert_iff(statement):
     """
 
     :param statement:
@@ -39,7 +45,7 @@ def _convert_equiv(statement):
 
     args = statement.args
     for i in range(len(args)):
-        args[i] = _convert_equiv(args[i])
+        args[i] = _convert_iff(args[i])
 
     if isinstance(statement, Iff):
         statement = And(If(args[0], args[1]), If(args[1], args[0]))
@@ -47,7 +53,7 @@ def _convert_equiv(statement):
     return statement
 
 
-def _convert_implies(statement):
+def _convert_if(statement):
     """
 
     :param statement:
@@ -58,7 +64,7 @@ def _convert_implies(statement):
 
     args = statement.args
     for i in range(len(args)):
-        args[i] = _convert_implies(args[i])
+        args[i] = _convert_if(args[i])
 
     if isinstance(statement, If):
         statement = Or(Not(args[0]), args[1])
@@ -81,11 +87,17 @@ def _distribute_not(statement):
             new_type = Or
             if isinstance(args[0], Or):
                 new_type = And
-            args[0] = new_type(Not(args[0].args[0]), Not(args[0].args[1]))
-            statement = _distribute_not(args[0])
+            statement = new_type(Not(args[0].args[0]), Not(args[0].args[1]))
+            statement = _distribute_not(statement)
         elif isinstance(args[0], Not):
             statement = args[0].args[0]
             statement = _distribute_not(statement)
+        elif isinstance(args[0], Quantifier):
+            new_type = Existential
+            if isinstance(args[0], Existential):
+                new_type = Universal
+            statement = new_type(args[0].symbol, Not(args[0].args[0]))
+            statement.args[0] = _distribute_not(statement.args[0])
     else:
         for i in range(len(args)):
             args[i] = _distribute_not(args[i])
@@ -124,7 +136,8 @@ def _is_cnf(statement, has_or=False):
     :param has_or:
     :return:
     """
-    if isinstance(statement, Symbol):
+    if isinstance(statement, Symbol) or isinstance(statement, Herbrand)\
+            or isinstance(statement, Skolem):
         return True
     elif isinstance(statement, Or):
         has_or = True
@@ -137,3 +150,115 @@ def _is_cnf(statement, has_or=False):
             return False
 
     return True
+
+
+def _convert_pnf(statement):
+    if isinstance(statement, str) or isinstance(statement, Symbol) or isinstance(statement, Herbrand) or isinstance(statement, Skolem):
+        return statement
+    if isinstance(statement, LogicalOperator):
+        if isinstance(statement, If):
+            if isinstance(statement.args[0], Existential):
+                statement = Universal(statement.args[0].symbol, If(statement.args[0].args[0], statement.args[1]))
+            elif isinstance(statement.args[0], Universal):
+                statement = Existential(statement.args[0].symbol, If(statement.args[0].args[0], statement.args[1]))
+            elif isinstance(statement.args[1], Quantifier):
+                q_type = type(statement.args[1])
+                statement = q_type(statement.args[1].symbol, If(statement.args[0], statement.args[1].args[0]))
+        elif isinstance(statement, And):
+            if isinstance(statement.args[0], Quantifier):
+                q_type = type(statement.args[0])
+                statement = q_type(statement.args[0].symbol, And(statement.args[0].args[0], statement.args[1]))
+            elif isinstance(statement.args[1], Quantifier):
+                q_type = type(statement.args[1])
+                statement = q_type(statement.args[1].symbol, And(statement.args[0], statement.args[1].args[0]))
+        elif isinstance(statement, Or):
+            if isinstance(statement.args[0], Quantifier):
+                q_type = type(statement.args[0])
+                statement = q_type(statement.args[0].symbol, Or(statement.args[0].args[0], statement.args[1]))
+            elif isinstance(statement.args[1], Quantifier):
+                q_type = type(statement.args[1])
+                statement = q_type(statement.args[1].symbol, Or(statement.args[0], statement.args[1].args[0]))
+        elif isinstance(statement, Not):
+            if isinstance(statement.args[0], Existential):
+                statement = Universal(statement.args[0].symbol, Not(statement.args[0].args[0]))
+            elif isinstance(statement.args[0], Universal):
+                statement = Existential(statement.args[0].symbol, Not(statement.args[0].args[0]))
+
+    for i in range(len(statement.args)):
+        statement.args[i] = _convert_pnf(statement.args[i])
+    return statement
+
+
+def _is_pnf(statement, has_operator=False):
+    if isinstance(statement, Symbol) or isinstance(statement, Herbrand) \
+            or isinstance(statement, Skolem):
+        return True
+    elif isinstance(statement, LogicalOperator):
+        has_operator = True
+    elif isinstance(statement, Quantifier) and has_operator:
+        return False
+
+    args = statement.args
+    for i in range(len(args)):
+        if _is_pnf(args[i], has_operator) is False:
+            return False
+    return True
+
+
+def _skolemization(statement, exists=None):
+    """
+    Remove existential quantifiers through skolemization
+
+    :param statement:
+    :param exists:
+    :return:
+    """
+    if exists is None:
+        exists = dict()
+    if isinstance(statement, Existential):
+        exists[statement.symbol] = Skolem()
+        statement = _skolemization(statement.args[0], exists)
+    elif isinstance(statement, Universal):
+        statement.args[0] = _skolemization(statement.args[0], exists)
+    elif isinstance(statement, Formula):
+        for i in range(len(statement.args)):
+            if isinstance(statement.args[i], Symbol):
+                if statement.args[i].arg in exists:
+                    statement.args[i] = exists[str(statement.args[i])]
+            else:
+                statement.args[i] = _skolemization(statement.args[i], exists)
+    else:
+        if statement in exists:
+            statement = exists[str(statement)]
+    return statement
+
+
+def _herbrandization(statement, forall=None):
+    """
+    Remove universal quantifiers through herbrandization
+
+    :param statement:
+    :param forall:
+    :return:
+    """
+    if forall is None:
+        forall = dict()
+    if isinstance(statement, Universal):
+        forall[statement.symbol] = Herbrand()
+        statement = _herbrandization(statement.args[0], forall)
+    elif isinstance(statement, Existential):
+        statement.args[0] = _herbrandization(statement.args[0], forall)
+    elif isinstance(statement, Formula):
+        for i in range(len(statement.args)):
+            if isinstance(statement.args[i], Symbol):
+                if statement.args[i].arg in forall:
+                    statement.args[i] = forall[str(statement.args[i])]
+            else:
+                statement.args[i] = _herbrandization(statement.args[i], forall)
+    else:
+        if statement in forall:
+            statement = forall[str(statement)]
+    return statement
+
+if __name__ == "__main__":
+    print(convert_to_cnf(parser.parse("not(forall(x,if(A(x),C(x))))")))

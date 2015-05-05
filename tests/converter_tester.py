@@ -1,7 +1,7 @@
 # pylint: disable=missing-docstring
 
 from forseti.formula import Symbol, Not, And, Or, Iff
-from forseti import converter
+from forseti import converter, parser
 from nose.tools import assert_equal, raises
 
 
@@ -57,6 +57,14 @@ def test_convert_to_cnf():
                    And(Or(c_symbol, Not(c_symbol)), Or(Not(a_symbol),
                                                        Not(c_symbol))))
     assert_equal(expected, statement)
+
+
+def test_convert_to_cnf_2():
+    statement = parser.parse("forall(x,if(A(x),and(B(x),C(x))))")
+    statement = converter.convert_to_cnf(statement)
+    expected = "((B(Herbrand1) | ~A(Herbrand1)) & (C(Herbrand1) | ~A(Herbrand1)))"
+    assert_equal(expected, str(statement))
+
 
 @raises(TypeError)
 def test_cnf_error_on_string():

@@ -17,6 +17,8 @@ Batch 2 contained only valid
 from forseti.prover import Prover
 from nose.tools import assert_false, assert_true
 
+# 25
+
 
 def test_prop_logic_1_1_1():
     prover = Prover()
@@ -95,7 +97,7 @@ def test_prob_logic_1_1_9():
 def test_prob_logic_1_1_10():
     prover = Prover()
     prover.add_goal("iff(if(not(P),P),P)")
-    assert_false(prover.run_prover())
+    assert_true(prover.run_prover())
 
 
 def test_prob_logic_1_1_11():

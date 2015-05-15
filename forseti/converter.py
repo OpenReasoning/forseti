@@ -7,9 +7,10 @@ from forseti.formula import Formula, Symbol, LogicalOperator, Not, And, Or, \
 import forseti.parser as parser
 
 
-def convert_to_cnf(statement):
+def convert_formula(statement):
     """
-    Convert a given statement to Conjective Normal Form (CNF)
+    Converts a given formula into something we can use
+    as CNF clauses for resolution
 
     :param statement:
     :return: a CNF statement
@@ -36,6 +37,7 @@ def convert_to_cnf(statement):
 
 def _convert_iff(statement):
     """
+    Convert biconditionals into two conditionals joined by an And
 
     :param statement:
     :return:
@@ -55,6 +57,7 @@ def _convert_iff(statement):
 
 def _convert_if(statement):
     """
+    Convert conditional (A -> B) into (~A or B)
 
     :param statement:
     :return:
@@ -74,6 +77,7 @@ def _convert_if(statement):
 
 def _distribute_not(statement):
     """
+    Distribute not over and/or clauses (flipping them)
 
     :param statement:
     :return:
@@ -106,6 +110,8 @@ def _distribute_not(statement):
 
 def _distribute_or(statement):
     """
+    Distribute or over any nested and statements (so and becomes
+    outer most logical operator)
 
     :param statement:
     :return:
@@ -131,6 +137,7 @@ def _distribute_or(statement):
 
 def _is_cnf(statement, has_or=False):
     """
+    Is the given formula a CNF yet?
 
     :param statement:
     :param has_or:
@@ -153,6 +160,12 @@ def _is_cnf(statement, has_or=False):
 
 
 def _convert_pnf(statement):
+    """
+    Covert a formula into PNF form. Needs to be run after _convert_if!
+
+    :param statement:
+    :return:
+    """
     if isinstance(statement, str) or isinstance(statement, Symbol) or isinstance(statement, Herbrand) or isinstance(statement, Skolem):
         return statement
     if isinstance(statement, LogicalOperator):
@@ -190,6 +203,13 @@ def _convert_pnf(statement):
 
 
 def _is_pnf(statement, has_operator=False):
+    """
+    Is the given statement a PNF yet?
+
+    :param statement:
+    :param has_operator:
+    :return:
+    """
     if isinstance(statement, Symbol) or isinstance(statement, Herbrand) \
             or isinstance(statement, Skolem):
         return True
@@ -209,8 +229,13 @@ def _skolemization(statement, exists=None):
     """
     Remove existential quantifiers through skolemization
 
+    If the existential is inside
+
     :param statement:
-    :param exists:
+    :param exists: dictionary containing what skole to replace a variable with
+                    x -> Skole1
+                    y -> Skole2
+                    etc.
     :return:
     """
     if exists is None:
@@ -261,4 +286,4 @@ def _herbrandization(statement, forall=None):
     return statement
 
 if __name__ == "__main__":
-    print(convert_to_cnf(parser.parse("not(forall(x,if(A(x),C(x))))")))
+    print(convert_formula(parser.parse("not(forall(x,if(A(x),C(x))))")))

@@ -52,7 +52,7 @@ class Prover(object):
         :return:
         """
         statement = parser.parse(statement)
-        statement = converter.convert_to_cnf(statement)
+        statement = converter.convert_formula(statement)
         add_to_list.append(statement)
 
     def run_prover(self):

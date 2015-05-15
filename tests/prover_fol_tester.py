@@ -262,15 +262,6 @@ def test_fol_logic_2_9():
     assert_false(prover.run_prover())
 
 
-@SkipTest
-@with_setup(setup)
-def test_fol_logic_2_10():
-    prover = Prover()
-    prover.add_formula("exists(x,forall(y,A(x,y)))")
-    prover.add_goal("exists(x,A(x,a))")
-    assert_true(prover.run_prover())
-
-
 @with_setup(setup)
 def test_fol_logic_2_11():
     prover = Prover()

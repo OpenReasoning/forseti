@@ -10,18 +10,6 @@ forseti
 .. image:: https://landscape.io/github/MasterOdin/forseti/master/landscape.svg?style=flat
     :target: https://landscape.io/github/MasterOdin/forseti/master
     :alt: Code Health
-.. image:: https://pypip.in/version/forseti/badge.svg
-    :target: https://pypi.python.org/pypi/forseti/
-    :alt: Latest Version
-.. image:: https://pypip.in/status/forseti/badge.svg
-    :target: https://pypi.python.org/pypi/forseti/
-    :alt: Development Status
-.. image:: https://pypip.in/py_versions/forseti/badge.svg
-    :target: https://pypi.python.org/pypi/forseti/
-    :alt: Supported Python versions
-.. image:: https://pypip.in/license/forseti/badge.svg
-    :target: https://pypi.python.org/pypi/forseti/
-    :alt: License
 
 A Formal Logic framework for a variety of applications.
 
@@ -58,7 +46,7 @@ An example:
 
   from forseti import parser
   from forseti.predicate import Atomic, And
-  assert parser.parse(and(a, b)) == And(Atomic('a'), Atomic('b'))
+  assert parser.parse("and(a, b)") == And(Atomic('a'), Atomic('b'))
 
 Additionally, it also comes with a builtin prover that can validate a propositional calculus argument
 

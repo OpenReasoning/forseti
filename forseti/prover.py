@@ -298,7 +298,7 @@ class Prover(object):
         for i in proof_formulas:
             extra = "Assumption"
             if len(self.parents[i]) > 0:
-                extra = "resolve(" + ",".join([str(x+1) for x in self.parents[i]]) + ")"
+                extra = "resolve(" + ",".join([str(y+1) for y in self.parents[i]]) + ")"
             cnf = str(util.cnf_list_as_disjunction(self._cnf_list[i]))
             proof.append(((str(i+1) + ")").rjust(4) + "    " + cnf.ljust(70) + "   " + extra))
         return proof

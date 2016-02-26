@@ -14,6 +14,7 @@ Batch 2 contained only valid
 
 # pylint: disable=missing-docstring
 
+from __future__ import unicode_literals
 from forseti.prover import Prover
 from nose.tools import assert_false, assert_true
 

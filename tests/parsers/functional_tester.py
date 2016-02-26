@@ -1,8 +1,10 @@
 # pylint: disable=missing-docstring
 
+from __future__ import unicode_literals
 from forseti import parser
 from forseti.formula import Symbol, Not, And, Or, If, Iff, Universal, \
     Predicate, Skolem, Herbrand
+import nose
 from nose.tools import assert_equal, raises, with_setup
 
 
@@ -95,3 +97,6 @@ def test_invalid_formula():
 @raises(SyntaxError)
 def test_extra_comma():
     parser.parse("and(a!,b)")
+
+if __name__ == "__main__":
+    nose.runmodule()

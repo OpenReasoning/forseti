@@ -3,6 +3,8 @@
 Predicate for use within Forseti
 """
 # pylint: disable=too-few-public-methods,missing-docstring
+from __future__ import unicode_literals
+from six import string_types
 
 
 class Formula(object):
@@ -12,28 +14,31 @@ class Formula(object):
         pass
 
     def __repr__(self):
-        raise NotImplementedError("Not implemented yet")
+        raise NotImplementedError("Not implemented")
 
     def __str__(self):
-        raise NotImplementedError("Not implemented yet")
+        raise NotImplementedError("Not implemented")
 
     def __eq__(self, other):
-        raise NotImplementedError("Not implemented yet")
+        raise NotImplementedError("Not implemented")
 
     def __ne__(self, other):
-        raise NotImplementedError("Not implemented yet")
+        raise NotImplementedError("Not implemented")
 
     def __lt__(self, other):
-        raise NotImplementedError("Not implemented yet")
+        raise NotImplementedError("Not implemented")
 
     def __le__(self, other):
-        raise NotImplementedError("Not implemented yet")
+        raise NotImplementedError("Not implemented")
 
     def __gt__(self, other):
-        raise NotImplementedError("Not implemented yet")
+        raise NotImplementedError("Not implemented")
 
     def __ge__(self, other):
-        raise NotImplementedError("Not implemented yet")
+        raise NotImplementedError("Not implemented")
+
+    def __hash__(self):
+        raise NotImplementedError("Not implemented")
 
 
 class Symbol(Formula):
@@ -44,8 +49,8 @@ class Symbol(Formula):
     arity = 0
 
     def __init__(self, arg):
-        if not isinstance(arg, str):
-            raise TypeError(str(arg) + " is not a string")
+        if not isinstance(arg, string_types):
+            raise TypeError(str(arg) + " is not a string type")
         super(Symbol, self).__init__()
         self.arg = arg
         self. args = [arg]
@@ -89,6 +94,9 @@ class Symbol(Formula):
     def __ge__(self, other):
         return other < self or other == self
 
+    def __hash__(self):
+        return hash(repr(self))
+
 
 class LogicalOperator(Formula):
     """
@@ -119,10 +127,10 @@ class LogicalOperator(Formula):
 
         :return: __repr__()
         """
-        raise NotImplementedError("Not implemented yet")
+        raise NotImplementedError("Not implemented")
 
     def __str__(self):
-        raise NotImplementedError("Not implemented yet")
+        raise NotImplementedError("Not implemented")
 
     def __eq__(self, other):
         if isinstance(self, type(other)):
@@ -155,6 +163,9 @@ class LogicalOperator(Formula):
 
     def __ge__(self, other):
         return other < self or other == self
+
+    def __hash__(self):
+        return hash(repr(self))
 
 
 class Not(LogicalOperator):
@@ -319,7 +330,7 @@ class Quantifier(Formula):
         super(Quantifier, self).__init__()
         if isinstance(arg1, Symbol):
             self.symbol = arg1.arg
-        elif isinstance(arg1, str):
+        elif isinstance(arg1, string_types):
             self.symbol = arg1
         else:
             raise Exception
@@ -327,10 +338,10 @@ class Quantifier(Formula):
         self.args = [arg2]
 
     def __repr__(self):
-        raise NotImplementedError("Not implemented yet")
+        raise NotImplementedError("Not implemented")
 
     def __str__(self):
-        raise NotImplementedError("Not implemented yet")
+        raise NotImplementedError("Not implemented")
 
     def __eq__(self, other):
         if isinstance(self, type(other)):
@@ -344,6 +355,9 @@ class Quantifier(Formula):
     def __lt__(self, other):
         if not isinstance(other, Quantifier):
             return False
+
+    def __hash__(self):
+        return hash(repr(self))
 
 
 class Universal(Quantifier):
@@ -401,6 +415,9 @@ class Skolem(Formula):
     def __ne__(self, other):
         return not self == other
 
+    def __hash__(self):
+        return hash(repr(self))
+
     @staticmethod
     def reset():
         Skolem.count = 1
@@ -429,6 +446,9 @@ class Herbrand(Formula):
 
     def __ne__(self, other):
         return not self == other
+
+    def __hash__(self):
+        return hash(repr(self))
 
     @staticmethod
     def reset():

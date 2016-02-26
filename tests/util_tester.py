@@ -1,4 +1,6 @@
 # pylint: disable=missing-docstring
+
+from __future__ import unicode_literals
 from six import StringIO
 from forseti.formula import Symbol, Not, Or
 import forseti.util as util

@@ -14,7 +14,7 @@ def read(*paths):
 setup(
     # Metadata
     name='forseti',
-    version='0.7.0',
+    version='0.8.0',
     description='Formal Logic Framework',
     long_description=read('README.rst'),
     url='https://github.com/MasterOdin/forseti',
@@ -39,7 +39,8 @@ setup(
     ],
 
     # Dependencies
-    tests_require=['nose', 'six'],
+    install_requires=['six'],
+    tests_require=['nose'],
 
     # Contents
     packages=find_packages(exclude=['tests*']),

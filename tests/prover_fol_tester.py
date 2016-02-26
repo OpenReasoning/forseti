@@ -1,9 +1,11 @@
 # pylint: disable=missing-docstring
 
+#from __future__ import unicode_literals
 from nose.tools import assert_false, assert_true, with_setup
 from forseti.prover import Prover
 from forseti.formula import Predicate, Herbrand, Skolem
 from nose.plugins.skip import SkipTest
+
 
 def setup():
     Predicate.reset()

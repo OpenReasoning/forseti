@@ -1,8 +1,10 @@
 # pylint: disable=missing-docstring
 
+from __future__ import unicode_literals
 from forseti.formula import Symbol, Not, And, Or, Iff
 from forseti import converter, parser
 from nose.tools import assert_equal, raises
+import nose
 
 
 def test_cnf_converter_symbol():
@@ -69,3 +71,7 @@ def test_convert_to_cnf_2():
 @raises(TypeError)
 def test_cnf_error_on_string():
     converter.convert_formula("invalid")
+
+
+if __name__ == "__main__":
+    nose.runmodule()

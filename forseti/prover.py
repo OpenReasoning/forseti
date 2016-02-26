@@ -2,8 +2,9 @@
 Automated Theorem Prover within Forseti
 """
 # pylint: disable=fixme
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 from copy import deepcopy
+from six import string_types
 from forseti.formula import Formula, Not, And, Or, Skolem, Herbrand, Predicate
 from forseti import converter, parser
 import forseti.util as util
@@ -28,7 +29,7 @@ class Prover(object):
         :param statement:
         :return:
         """
-        if isinstance(statement, str):
+        if isinstance(statement, string_types):
             statement = parser.parse(statement)
         self._add_statement(deepcopy(statement), self.formulas)
 
@@ -209,7 +210,7 @@ class Prover(object):
     @staticmethod
     def _check_element(element, negation, unify):
         if isinstance(element, type(negation)) and not isinstance(element, Herbrand):
-            if isinstance(element, str) and isinstance(negation, str):
+            if isinstance(element, string_types) and isinstance(negation, string_types):
                 return [element == negation, 0, None]
             elif isinstance(element, Formula) and isinstance(negation, Formula):
                 if isinstance(element, Predicate) and isinstance(negation, Predicate):
@@ -261,7 +262,7 @@ class Prover(object):
 
     @staticmethod
     def _replace_herbrand(element, replace, replacement):
-        if isinstance(element, str):
+        if isinstance(element, string_types):
             return element
         assert isinstance(element, Formula)
         assert isinstance(replace, Herbrand)

@@ -1,5 +1,6 @@
 # pylint: disable=missing-docstring
 
+from __future__ import unicode_literals
 from nose.tools import assert_equal, raises
 from forseti.prover import Prover
 
@@ -17,6 +18,7 @@ def test_get_proof():
                 '  4)    $$FALSE                                              '
                 '                    resolve(1,3)']
     assert_equal(expected, proof)
+
 
 @raises(TypeError)
 def test_prover_formula_error():

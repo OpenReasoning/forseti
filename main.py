@@ -1,7 +1,11 @@
+"""
+A brief demonstration of using the prover within Forseti
+"""
+
 from __future__ import print_function
 from forseti.prover import Prover
-# pylint: disable=duplicate-code
 
+# pylint: disable=duplicate-code
 prover = Prover()
 prover.add_formula("or(iff(G,H),iff(not(G),H))")
 prover.add_goal("or(iff(not(G),not(H)),not(iff(G,H)))")

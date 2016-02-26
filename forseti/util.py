@@ -2,7 +2,8 @@
 Util functions utilized by Forseti library (or for testing it)
 """
 
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
+from six import string_types
 from forseti.formula import Not, Formula, Or, Herbrand, Predicate, Skolem
 import sys
 
@@ -12,6 +13,9 @@ def print_cnf_list(formulas, depth=0, end="\n", out=sys.stdout):
     prints out the CNF list
 
     :param formulas:
+    :param depth: depth we're at within the cnf list
+    :param end: line ending for cnf list
+    :param out: output to write to
     :return:
     """
     output = "["
@@ -29,6 +33,11 @@ def print_cnf_list(formulas, depth=0, end="\n", out=sys.stdout):
 
 
 def cnf_list_as_disjunction(formulas):
+    """
+
+    :param formulas:
+    :return:
+    """
     if len(formulas) > 0:
         output = formulas[0]
         for i in range(1, len(formulas)):
@@ -69,6 +78,12 @@ def is_tautology(cnf):
 
 
 def _in_list(cnf_list, negation):
+    """
+
+    :param cnf_list:
+    :param negation:
+    :return:
+    """
     for i in range(len(cnf_list)):
         element = cnf_list[i]
         run = _check_element(element, negation)
@@ -78,8 +93,14 @@ def _in_list(cnf_list, negation):
 
 
 def _check_element(element, negation):
+    """
+
+    :param element:
+    :param negation:
+    :return:
+    """
     if isinstance(element, type(negation)) and not isinstance(element, Herbrand):
-        if isinstance(element, str) and isinstance(negation, str):
+        if isinstance(element, string_types) and isinstance(negation, string_types):
             return element == negation
         elif isinstance(element, Formula) and isinstance(negation, Formula):
             if isinstance(element, Predicate) and isinstance(negation, Predicate):

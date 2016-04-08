@@ -65,6 +65,12 @@ Roadmap
 1. First Order Logic Prover
 2. Optimizations
 
+Usages
+------
+These projects use forseti at their core:
+
+1. `Truth Tables <https://github.com/MasterOdin/TruthTables>`_
+
 Goals
 -----
 Using forseti to implement the following programs/applications

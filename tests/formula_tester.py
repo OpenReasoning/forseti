@@ -53,11 +53,6 @@ def test_formula_ge():
 
 
 @raises(NotImplementedError)
-def test_formula_hash():
-    hash(Formula())
-
-
-@raises(NotImplementedError)
 def test_abstract_str():
     statement = LogicalOperator()
     str(statement)
@@ -79,7 +74,6 @@ def test_symbol():
     assert_equal(statement.arity, 0)
     assert_equal(repr(statement), "a")
     assert_equal(str(statement), "a")
-    assert_is_not_none(hash(statement))
 
 
 def test_not():
@@ -88,7 +82,6 @@ def test_not():
     assert_equal(statement_not.arity, 1)
     assert_equal(repr(statement_not), "not(a)")
     assert_equal(str(statement_not), "~a")
-    assert_is_not_none(hash(statement_not))
 
 
 def test_and():
@@ -98,7 +91,6 @@ def test_and():
     assert_equal(statement_and.arity, 2)
     assert_equal(repr(statement_and), "and(a, b)")
     assert_equal(str(statement_and), "(a & b)")
-    assert_is_not_none(hash(statement_and))
 
 
 def test_or():
@@ -108,7 +100,6 @@ def test_or():
     assert_equal(statement_or.arity, 2)
     assert_equal(repr(statement_or), "or(a, b)")
     assert_equal(str(statement_or), "(a | b)")
-    assert_is_not_none(hash(statement_or))
 
 
 def test_if():
@@ -118,7 +109,6 @@ def test_if():
     assert_equal(statement_if.arity, 2)
     assert_equal(repr(statement_if), "if(a, b)")
     assert_equal(str(statement_if), "(a -> b)")
-    assert_is_not_none(hash(statement_if))
 
 
 def test_iff():
@@ -128,7 +118,6 @@ def test_iff():
     assert_equal(statement_iff.arity, 2)
     assert_equal(repr(statement_iff), "iff(a, b)")
     assert_equal(str(statement_iff), "(a <-> b)")
-    assert_is_not_none(hash(statement_iff))
 
 
 def test_complex():

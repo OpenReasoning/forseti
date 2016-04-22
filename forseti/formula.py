@@ -37,9 +37,6 @@ class Formula(object):
     def __ge__(self, other):
         raise NotImplementedError("Not implemented")
 
-    def __hash__(self):
-        raise NotImplementedError("Not implemented")
-
 
 class Symbol(Formula):
     """
@@ -93,9 +90,6 @@ class Symbol(Formula):
 
     def __ge__(self, other):
         return other < self or other == self
-
-    def __hash__(self):
-        return hash(repr(self))
 
 
 class LogicalOperator(Formula):
@@ -163,9 +157,6 @@ class LogicalOperator(Formula):
 
     def __ge__(self, other):
         return other < self or other == self
-
-    def __hash__(self):
-        return hash(repr(self))
 
 
 class Not(LogicalOperator):
@@ -356,9 +347,6 @@ class Quantifier(Formula):
         if not isinstance(other, Quantifier):
             return False
 
-    def __hash__(self):
-        return hash(repr(self))
-
 
 class Universal(Quantifier):
     """
@@ -415,9 +403,6 @@ class Skolem(Formula):
     def __ne__(self, other):
         return not self == other
 
-    def __hash__(self):
-        return hash(repr(self))
-
     @staticmethod
     def reset():
         Skolem.count = 1
@@ -447,9 +432,14 @@ class Herbrand(Formula):
     def __ne__(self, other):
         return not self == other
 
-    def __hash__(self):
-        return hash(repr(self))
-
     @staticmethod
     def reset():
         Herbrand.count = 1
+
+
+class FrozenFormula(object):
+    def __init__(self, formula):
+        self.formula = formula
+
+    def __hash__(self):
+        return hash(repr(self))

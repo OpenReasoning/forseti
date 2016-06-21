@@ -4,7 +4,7 @@ Util functions utilized by Forseti library (or for testing it)
 
 from __future__ import print_function, unicode_literals
 from six import string_types
-from forseti.formula import Not, Formula, Or, Herbrand, Predicate, Skolem
+from forseti.formula import Formula, Symbol, Not, And, Or, If, Iff, Herbrand, Predicate, Skolem
 import sys
 
 
@@ -121,3 +121,31 @@ def _check_element(element, negation):
         return False
     else:
         return False
+
+
+def pretty_print(formula):
+    """
+
+    :param formula:
+    :return:
+    """
+    if isinstance(formula, Symbol) or isinstance(formula, Predicate):
+        text = str(formula)
+    elif isinstance(formula, Not):
+        text = "¬" + pretty_print(formula.args[0])
+    else:
+        temp = []
+        for arg in formula.args:
+            temp.append(pretty_print(arg))
+        if isinstance(formula, And):
+            text = " ∧ ".join(temp)
+        elif isinstance(formula, Or):
+            text = " ∨ ".join(temp)
+        elif isinstance(formula, If):
+            text = " → ".join(temp)
+        elif isinstance(formula, Iff):
+            text = " ↔ ".join(temp)
+        else:
+            raise TypeError("Invalid Formula Type: " + str(type(formula)))
+        text = "(" + text + ")"
+    return text.strip()

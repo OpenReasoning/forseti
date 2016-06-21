@@ -138,6 +138,9 @@ class LogicalOperator(Formula):
     def __ne__(self, other):
         return not self == other
 
+    """
+    Not < And < Or < If < Iff
+    """
     def __lt__(self, other):
         if isinstance(other, Symbol):
             return False
@@ -147,6 +150,23 @@ class LogicalOperator(Formula):
                     if not self.args[i] < other.args[i]:
                         return False
                 return True
+            elif isinstance(self, Not):
+                return True
+            elif isinstance(self, And):
+                if isinstance(other, Not):
+                    return False
+                else:
+                    return True
+            elif isinstance(self, Or):
+                if isinstance(other, Not) or isinstance(other, And):
+                    return False
+                else:
+                    return True
+            elif isinstance(self, If):
+                if not isinstance(other, Iff):
+                    return True
+                else:
+                    return False
             return False
 
     def __le__(self, other):

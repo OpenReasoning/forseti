@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Util functions utilized by Forseti library (or for testing it)
 """

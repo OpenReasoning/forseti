@@ -3,8 +3,6 @@
 Util functions utilized by Forseti library (or for testing it)
 """
 
-from __future__ import print_function, unicode_literals
-from six import string_types
 from forseti.formula import Formula, Symbol, Not, And, Or, If, Iff, Herbrand, Predicate, Skolem
 import sys
 
@@ -101,7 +99,7 @@ def _check_element(element, negation):
     :return:
     """
     if isinstance(element, type(negation)) and not isinstance(element, Herbrand):
-        if isinstance(element, string_types) and isinstance(negation, string_types):
+        if isinstance(element, str) and isinstance(negation, str):
             return element == negation
         elif isinstance(element, Formula) and isinstance(negation, Formula):
             if isinstance(element, Predicate) and isinstance(negation, Predicate):

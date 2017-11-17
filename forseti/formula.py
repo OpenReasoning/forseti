@@ -3,8 +3,6 @@
 Predicate for use within Forseti
 """
 # pylint: disable=too-few-public-methods,missing-docstring
-from __future__ import unicode_literals
-from six import string_types
 
 
 class Formula(object):
@@ -46,7 +44,7 @@ class Symbol(Formula):
     arity = 0
 
     def __init__(self, arg):
-        if not isinstance(arg, string_types):
+        if not isinstance(arg, str):
             raise TypeError(str(arg) + " is not a string type")
         super(Symbol, self).__init__()
         self.arg = arg
@@ -341,7 +339,7 @@ class Quantifier(Formula):
         super(Quantifier, self).__init__()
         if isinstance(arg1, Symbol):
             self.symbol = arg1.arg
-        elif isinstance(arg1, string_types):
+        elif isinstance(arg1, str):
             self.symbol = arg1
         else:
             raise Exception

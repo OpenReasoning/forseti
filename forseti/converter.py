@@ -2,7 +2,7 @@
 Converter functions for Forseti statements (to CNF)
 """
 
-from forseti.formula import Formula, Symbol, LogicalOperator, Not, And, Or, \
+from .formula import Formula, Symbol, LogicalOperator, Not, And, Or, \
     If, Iff, Quantifier, Existential, Skolem, Universal, Herbrand
 import forseti.parser as parser
 

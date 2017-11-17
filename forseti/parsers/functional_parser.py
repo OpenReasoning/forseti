@@ -10,9 +10,7 @@ if(A, B)
 iff(A, B)
 """
 
-from __future__ import unicode_literals
-from forseti.formula import Symbol, Not, And, Or, If, Iff, Predicate, \
-    Existential, Universal
+from ..formula import Symbol, Not, And, Or, If, Iff, Predicate, Existential, Universal
 from forseti.parsers.abstract_parser import AbstractParser
 
 

@@ -31,16 +31,11 @@ setup(
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Operating System :: OS Independent',
         'Topic :: Scientific/Engineering :: Mathematics',
     ],
-
-    # Dependencies
-    install_requires=['six'],
-    tests_require=['nose'],
 
     # Contents
     packages=find_packages(exclude=['tests*']),

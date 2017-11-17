@@ -1,20 +1,20 @@
 forseti
 =======
 
-.. image:: https://travis-ci.org/MasterOdin/forseti.svg?branch=master
-    :target: https://travis-ci.org/MasterOdin/forseti
+.. image:: https://travis-ci.org/OpenReasoning/forseti.svg?branch=master
+    :target: https://travis-ci.org/OpenReasoning/forseti
     :alt: Build Status
-.. image:: https://coveralls.io/repos/MasterOdin/forseti/badge.svg?branch=master
-    :target: https://coveralls.io/r/MasterOdin/forseti?branch=master
+.. image:: https://coveralls.io/repos/OpenReasoning/forseti/badge.svg?branch=master
+    :target: https://coveralls.io/r/OpenReasoning/forseti?branch=master
     :alt: Coverage Status
-.. image:: https://landscape.io/github/MasterOdin/forseti/master/landscape.svg?style=flat
-    :target: https://landscape.io/github/MasterOdin/forseti/master
+.. image:: https://landscape.io/github/OpenReasoning/forseti/master/landscape.svg?style=flat
+    :target: https://landscape.io/github/OpenReasoning/forseti/master
     :alt: Code Health
 
 A Formal Logic framework for a variety of applications.
 
 Installation
-------------
+~~~~~~~~~~~~
 
 From PyPI
 ~~~~~~~~~
@@ -30,7 +30,7 @@ From source
 
 ::
 
-    $ git clone git@github.com:MasterOdin/forseti.git
+    $ git clone git@github.com:OpenReasoning/forseti.git
     $ python setup.py install
 
 Usage
@@ -69,7 +69,7 @@ Usages
 ------
 These projects use forseti at their core:
 
-1. `Truth Tables <https://github.com/MasterOdin/TruthTables>`_
+1. `Truth Tables <https://github.com/OpenReasoning/TruthTables>`_
 
 Goals
 -----

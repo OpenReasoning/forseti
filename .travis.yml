@@ -10,7 +10,7 @@ install:
   - pip install coverage
 
 script:
-  - coverage run --source forseti python setup.py test
+  - coverage run --source forseti setup.py test
 
 after_success:
   - coveralls

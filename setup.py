@@ -11,6 +11,7 @@ def read(*paths):
     with open(os.path.join(*paths), 'r') as open_file:
         return open_file.read()
 
+
 setup(
     # Metadata
     name='forseti',

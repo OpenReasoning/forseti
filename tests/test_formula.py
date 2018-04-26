@@ -7,7 +7,7 @@ import unittest
 from forseti.formula import Formula, Symbol, LogicalOperator, Not, And, Or, If, Iff
 
 
-class FormulaTester(unittest.TestCase):
+class TestFormula(unittest.TestCase):
     def test_formula_str(self):
         with self.assertRaises(NotImplementedError):
             str(Formula())

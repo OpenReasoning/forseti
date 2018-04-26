@@ -4,7 +4,7 @@ import unittest
 from forseti.prover import Prover
 
 
-class ProverTester(unittest.TestCase):
+class TestProver(unittest.TestCase):
     def test_get_proof(self):
         prover = Prover()
         prover.add_formula("and(a,b)")

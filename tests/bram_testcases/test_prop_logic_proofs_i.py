@@ -6,22 +6,22 @@ import unittest
 from forseti.prover import Prover
 
 
-class PropLogicProofsTester(unittest.TestCase):
-    def test_problem_1(self):
+class TestPropLogicProofsI(unittest.TestCase):
+    def test_problem_01(self):
         prover = Prover()
         prover.add_formula("and(R, and(C, not(F)))")
         prover.add_formula("if(or(R, S), not(W))")
         prover.add_goal("not(W)")
         self.assertTrue(prover.run_prover())
 
-    def test_problem_2(self):
+    def test_problem_02(self):
         prover = Prover()
         prover.add_formula("if(A, and(B, C))")
         prover.add_formula("not(C)")
         prover.add_goal("not(and(A, D))")
         self.assertTrue(prover.run_prover())
 
-    def test_problem_3(self):
+    def test_problem_03(self):
         prover = Prover()
         prover.add_formula("not(iff(A, B))")
         prover.add_formula("not(A)")
@@ -29,14 +29,14 @@ class PropLogicProofsTester(unittest.TestCase):
         prover.add_goal("and(C, not(C))")
         self.assertTrue(prover.run_prover())
 
-    def test_problem_4(self):
+    def test_problem_04(self):
         prover = Prover()
         prover.add_formula("iff(F, G)")
         prover.add_formula("or(F, G)")
         prover.add_goal("and(F, G)")
         self.assertTrue(prover.run_prover())
 
-    def test_problem_5(self):
+    def test_problem_05(self):
         prover = Prover()
         prover.add_formula("iff(not(B), Z)")
         prover.add_formula("if(N, B)")
@@ -44,14 +44,14 @@ class PropLogicProofsTester(unittest.TestCase):
         prover.add_goal("not(H)")
         self.assertTrue(prover.run_prover())
 
-    def test_problem_6(self):
+    def test_problem_06(self):
         prover = Prover()
         prover.add_formula("iff(A, B)")
         prover.add_formula("iff(B, not(C))")
         prover.add_goal("not(iff(A, C))")
         self.assertTrue(prover.run_prover())
 
-    def test_problem_7(self):
+    def test_problem_07(self):
         prover = Prover()
         prover.add_formula("if(M, I)")
         prover.add_formula("and(not(I), L)")
@@ -59,7 +59,7 @@ class PropLogicProofsTester(unittest.TestCase):
         prover.add_goal("B")
         self.assertTrue(prover.run_prover())
 
-    def test_problem_8(self):
+    def test_problem_08(self):
         prover = Prover()
         prover.add_formula("or(Q, iff(J, D))")
         prover.add_formula("not(D)")
@@ -67,7 +67,7 @@ class PropLogicProofsTester(unittest.TestCase):
         prover.add_goal("Q")
         self.assertTrue(prover.run_prover())
 
-    def test_problem_9(self):
+    def test_problem_09(self):
         prover = Prover()
         prover.add_formula("or(A, B)")
         prover.add_formula("or(not(B), C)")

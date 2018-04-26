@@ -5,40 +5,40 @@ import unittest
 from forseti.prover import Prover
 
 
-class PropLogicProofsIITester(unittest.TestCase):
-    def test_problem_1(self):
+class TestPropLogicProofsII(unittest.TestCase):
+    def test_problem_01(self):
         prover = Prover()
         prover.add_formula("not(A)")
         prover.add_goal("if(A, B)")
         self.assertTrue(prover.run_prover())
 
-    def test_problem_2(self):
+    def test_problem_02(self):
         prover = Prover()
         prover.add_formula("A")
         prover.add_goal("if(B, A)")
         self.assertTrue(prover.run_prover())
 
-    def test_problem_3(self):
+    def test_problem_03(self):
         prover = Prover()
         prover.add_formula("if(A, if(B, C))")
         prover.add_goal("if(B, if(A, C))")
         self.assertTrue(prover.run_prover())
 
-    def test_problem_4(self):
+    def test_problem_04(self):
         prover = Prover()
         prover.add_formula("if(A, B)")
         prover.add_formula("if(A, C)")
         prover.add_goal("if(A, and(B, C))")
         self.assertTrue(prover.run_prover())
 
-    def test_problem_5(self):
+    def test_problem_05(self):
         prover = Prover()
         prover.add_formula("if(A, C)")
         prover.add_formula("if(B, C)")
         prover.add_goal("if(or(A, B), C)")
         self.assertTrue(prover.run_prover())
 
-    def test_problem_6(self):
+    def test_problem_06(self):
         prover = Prover()
         prover.add_formula("or(A, and(B, C))")
         prover.add_formula("if(A, D)")
@@ -46,7 +46,7 @@ class PropLogicProofsIITester(unittest.TestCase):
         prover.add_goal("C")
         self.assertTrue(prover.run_prover())
 
-    def test_problem_7(self):
+    def test_problem_07(self):
         prover = Prover()
         prover.add_formula("A")
         prover.add_formula("iff(A, B)")
@@ -54,14 +54,14 @@ class PropLogicProofsIITester(unittest.TestCase):
         prover.add_goal("not(C)")
         self.assertTrue(prover.run_prover())
 
-    def test_problem_8(self):
+    def test_problem_08(self):
         prover = Prover()
         prover.add_formula("if(or(A, B), if(C, D))")
         prover.add_formula("if(or(not(D), E), and(A, C))")
         prover.add_goal("D")
         self.assertTrue(prover.run_prover())
 
-    def test_problem_9(self):
+    def test_problem_09(self):
         prover = Prover()
         prover.add_formula("if(A, B)")
         prover.add_formula("if(A, not(B))")
@@ -146,12 +146,15 @@ class PropLogicProofsIITester(unittest.TestCase):
         self.assertTrue(prover.run_prover())
 
     def test_problem_20(self):
+        """
+        While the PDF claims all arguments are "valid", this one is not
+        """
         prover = Prover()
         prover.add_formula("if(or(not(A), B), not(and(C, D)))")
         prover.add_formula("if(and(A, C), E)")
         prover.add_formula("and(A, not(E))")
         prover.add_goal("not(or(D, E))")
-        self.assertTrue(prover.run_prover())
+        self.assertFalse(prover.run_prover())
 
 
 if __name__ == "__main__":

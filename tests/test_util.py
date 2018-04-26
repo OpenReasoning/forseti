@@ -6,7 +6,7 @@ from forseti.formula import Symbol, Not, Or
 import forseti.util as util
 
 
-class UtilTester(unittest.TestCase):
+class TestUtil(unittest.TestCase):
     def test_print_cnf_list(self):
         cnf = list()
         a_symbol = Symbol("a")

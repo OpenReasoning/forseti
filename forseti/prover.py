@@ -3,9 +3,12 @@ Automated Theorem Prover within Forseti
 """
 # pylint: disable=fixme
 from copy import deepcopy
+import time
+
 from forseti.formula import Formula, Not, And, Or, Skolem, Herbrand, Predicate
 from forseti import converter, parser
 import forseti.util as util
+from forseti import exceptions
 
 
 class Prover(object):
@@ -13,13 +16,15 @@ class Prover(object):
     Prover class
     """
 
-    def __init__(self):
+    def __init__(self, timeout=30):
         self._cnf_list = []
         self.parents = []
         self.formulas = []
         self.goals = []
         self._goals = []
         self.proof_found = False
+        self.proof_time = 0
+        self.proof_timeout = timeout
 
     def add_formula(self, statement):
         """
@@ -80,7 +85,7 @@ class Prover(object):
             self._cnf_list[i] = sorted(self._cnf_list[i])
         for i in range(len(self._cnf_list)):
             self.parents.append([])
-        self.proof_found = self._resolve()
+        self.proof_found, self.proof_time = self._resolve()
         return self.proof_found
 
     @staticmethod
@@ -133,9 +138,12 @@ class Prover(object):
 
         :return:
         """
+        start_time = time.time()
         i = 0
         checked = list()
         while i < len(self._cnf_list):
+            if (time.time() - start_time) > self.proof_timeout:
+                raise exceptions.TimeoutException('Proof timeout reached')
             j = i + 1
             while j < len(self._cnf_list):
                 if [i, j] in checked:
@@ -165,7 +173,7 @@ class Prover(object):
                         if len(new_cnf) == 0:
                             self._cnf_list.append([])
                             self.parents.append([i, j])
-                            return True
+                            return True, time.time() - start_time
                         if not util.is_tautology(new_cnf) and \
                            new_cnf not in self._cnf_list:
                             have_resolve = True
@@ -180,7 +188,7 @@ class Prover(object):
                     break
                 j += 1
             i += 1
-        return False
+        return False, time.time() - start_time
 
     def _tautology_elimination(self):
         """

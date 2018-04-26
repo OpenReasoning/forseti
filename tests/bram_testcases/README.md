@@ -13,4 +13,4 @@ The handouts, in order of difficulty in given arguments and for ATP testing:
 * [Propositional Logic Arguments](handouts/PropLogicArguments.pdf)
 * [Propositional Logic Arguments II](handouts/PropLogicArgumentsII.pdf)
 * [Predicate Logic Arguments](handouts/PredicateLogicArguments.pdf)
-* [First Order Logic Proofs](handouts/FOLProofs.pdf)
+* [First Order Logic Proofs](handouts/FOLProofsII.pdf)

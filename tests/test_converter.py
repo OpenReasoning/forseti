@@ -5,7 +5,7 @@ from forseti.formula import Symbol, Not, And, Or, Iff
 from forseti import converter, parser
 
 
-class ConverterTester(unittest.TestCase):
+class TestConverter(unittest.TestCase):
     def test_cnf_converter_symbol(self):
         statement = Symbol("a")
         statement = converter.convert_formula(statement)
